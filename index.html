@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vocab Tester</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+		html,
+		body {
+		  height: 100%;
+		  margin: 0;
+		}
+
+		.main {
+		  height: 100%;
+		  margin: 0;
+		  display: flex;
+		  flex-direction: column;
+		  background-color: rgb(24, 26, 27);
+		  color: white;
+		}
+
+		.text-container {
+		  flex-grow: 1;
+		  display: flex;
+		  flex-direction: column;
+		  justify-content: center;
+		  align-items: center;
+		}
+
+		#meaning {
+		  font-size: 42px;
+		  position: fixed;
+		  top: 10%;
+		  width: 100%;
+		  text-align: center;
+		}
+
+		#japanese-text {
+		  font-size: 72px;
+		}
+
+		input {
+		  font-size: 72px;
+		  margin: 10px;
+		  height: 20%;
+		  text-align: center;
+		  box-sizing: border-box;
+		  background-color: rgb(43, 42, 51);
+		  color: white;
+		  border-width: 1px;
+		  border-color: grey;
+		  border-radius: 4px;
+		}
+
+		input:focus {
+		  outline: none;
+		}
+
+		.correct {
+		  color: green;
+		}
+	</style>
+  </head>
+  <body>
+    <main class="main">
+      <div class="text-container">
+        <div id="meaning"></div>
+        <div id="japanese-text"></div>
+      </div>
+      <input
+        id="answer-input"
+        type="text"
+        onkeypress="confirmInput(event)"
+        style="display: none"
+      />
+      <input id="file-input" type="file" />
+    </main>
+    <script>
+		const meaningLabel = document.getElementById("meaning");
+		const japaneseLabel = document.getElementById("japanese-text");
+		const answerInput = document.getElementById("answer-input");
+		const fileInput = document.getElementById("file-input");
+		let vocabs = [];
+		let current_vocabs = [];
+		let current_index = -1;
+		let current_vocab = "";
+		let current_pure_vocab = "";
+		let current_meaning = "";
+		let mode = 0;
+
+		fileInput.addEventListener("change", function (e) {
+			const file = e.target.files[0];
+			const reader = new FileReader();
+			reader.onload = function (f) {
+				const text = f.target.result;
+				const lines = text.split("\r\n");
+				lines.forEach(line => {
+					const words = line.split(";");
+					if (words.length === 2) {
+						vocabs.push([words[0], words[1]]);
+					}
+				});
+
+				fileInput.style["display"] = "none";
+				answerInput.style["display"] = "";
+				
+				current_vocabs = vocabs.slice(0);
+				setNewVocab();
+			}
+			reader.readAsText(file);
+		});
+
+		function setNewVocab() {
+			if (current_index !== -1) {
+				current_vocabs.splice(current_index, 1);
+			}
+			if (current_vocabs.length === 0) {
+				current_vocabs = vocabs.slice(0);
+			}
+
+			current_index = Math.floor(Math.random() * current_vocabs.length);
+
+			current_vocab = "";
+			let vocab = current_vocabs[current_index][0];
+			vocab = vocab.replaceAll("「", ",").replaceAll("」", ",").replaceAll(" ", "");
+			vocab.split(",").forEach((word, index) => {
+				if (index % 2 === 0) current_vocab += word;
+			});
+			current_pure_vocab = current_vocab;
+
+			current_meaning = "";
+
+			meaningLabel.innerHTML = current_meaning;
+			japaneseLabel.innerHTML = current_vocab;
+		}
+
+		function getVocabWithFurigana() {
+			const vocab = current_vocabs[current_index][0];
+			words = vocab.replaceAll("「", ",").replaceAll("」", ",").split(",");
+			if (words.length > 1) { // has furigana
+				let new_vocab = "";
+				words.forEach((word, index) => {
+					if (index % 2 === 0) {
+						if (word.includes(" ")) {
+							const characters = word.split(" ");
+							new_vocab += characters[0];
+							word = characters[1];
+						}
+						new_vocab += "<ruby><rb>" + word + "</rb>";
+					} else {
+						new_vocab += "<rt>" + word + "</rt></ruby>";
+					}
+				});
+				return new_vocab;
+			} else {
+				return words[0];
+			}
+		}
+
+		function confirmInput(event) {
+			if (event.key == "Enter") {
+				mode++;
+				if (mode === 1) {
+					current_vocab = getVocabWithFurigana();
+					current_meaning = current_vocabs[current_index][1];
+
+					meaningLabel.innerHTML = current_meaning;
+					japaneseLabel.innerHTML = current_vocab;
+				} else if (mode === 2) {
+					mode = 0;
+					answerInput.value = "";
+					setNewVocab();
+				}
+
+				if (answerInput.value === current_pure_vocab) {
+					japaneseLabel.classList += "correct";
+				} else {
+					japaneseLabel.classList = "";
+				}
+			}
+		}
+	</script>
+  </body>
+</html>
