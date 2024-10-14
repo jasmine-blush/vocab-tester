@@ -124,7 +124,7 @@
 
 			current_vocab = "";
 			let vocab = current_vocabs[current_index][0];
-			vocab = vocab.replaceAll("「", ",").replaceAll("」", ",").replaceAll(" ", "");
+			vocab = vocab.replaceAll("「", ",").replaceAll("」", ",").replaceAll("[", ",").replaceAll("]",",").replaceAll("　", "").replaceAll(" ", "");
 			vocab.split(",").forEach((word, index) => {
 				if (index % 2 === 0) current_vocab += word;
 			});
@@ -138,7 +138,7 @@
 
 		function getVocabWithFurigana() {
 			const vocab = current_vocabs[current_index][0];
-			words = vocab.replaceAll("「", ",").replaceAll("」", ",").split(",");
+			words = vocab.replaceAll("「", ",").replaceAll("」", ",").replaceAll("[", ",").replaceAll("]",",").replaceAll("　", " ").split(",");
 			if (words.length > 1) { // has furigana
 				let new_vocab = "";
 				words.forEach((word, index) => {
