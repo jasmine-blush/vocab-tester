@@ -23,13 +23,13 @@ Example: ``もらう;to receive``
 
 <img width="600" src="Images\\receive.png"/>  
 
-You can also set furigana by using the japanese quotes ``「`` and ``」`` after a kanji (or multiple kanji)  
-Example: ``家「か」族「ぞく」;family`` or ``日本「にほん」語「ご」;Japanese (language)``
+You can also set furigana by using japanese quotes ``「`` and ``」``, or square brackets ``[`` and ``]``, after a kanji (or multiple kanji)  
+Example: ``家「か」族「ぞく」;family`` or ``日本[にほん]語[ご];Japanese (language)``
 
 <img width="600" src="Images\\family.png"/>  
 
-The furigana will be applied to all symbols that came before it, stopping at the previous furigana if there is one.  
-If you want to apply the furigana only to specific characters, just place a space before it.  
-Example: ``お 願「ねが」いします;please`` (there is a space between ``お`` and ``願``)
+The furigana will be applied to all symbols that came before it, stopping at any previous furigana.  
+If you want to apply furigana only to specific characters, just place a latin or japanese space before it.  
+Example: ``お 願「ねが」いします;please`` (there is a space between ``お`` and ``願``) or ``お　願「ねが」いします;please``
 
 <img width="600" src="Images\\please.png"/>
