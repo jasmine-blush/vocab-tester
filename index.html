@@ -69,6 +69,7 @@
         <div id="meaning"></div>
         <div id="japanese-text"></div>
       </div>
+	  <div id="counter"></div>
       <input
         id="answer-input"
         type="text"
@@ -80,6 +81,7 @@
     <script>
 		const meaningLabel = document.getElementById("meaning");
 		const japaneseLabel = document.getElementById("japanese-text");
+		const counter = document.getElementById("counter");
 		const answerInput = document.getElementById("answer-input");
 		const fileInput = document.getElementById("file-input");
 		let vocabs = [];
@@ -134,6 +136,7 @@
 
 			meaningLabel.innerHTML = current_meaning;
 			japaneseLabel.innerHTML = current_vocab;
+			counter.innerHTML = (vocabs.length - current_vocabs.length + 1) + "/" + vocabs.length
 		}
 
 		function getVocabWithFurigana() {
