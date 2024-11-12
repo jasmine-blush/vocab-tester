@@ -33,3 +33,10 @@ If you want to apply furigana only to specific characters, just place a latin or
 Example: ``お 願「ねが」いします;please`` (there is a space between ``お`` and ``願``) or ``お　願「ねが」いします;please``
 
 <img width="600" src="Images\\please.png"/>
+
+## Custom Fonts ##
+If you want to use custom fonts, you can add paths to your font files in the ``FONTS`` array in the ``index.html`` file.  
+
+<img width="300" src="Images\\fonts.png"/>
+
+This will display a button allowing you to randomly switch between your fonts.
